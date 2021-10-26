@@ -1,5 +1,5 @@
 {
-  "name": "qsparser",
+  "name": "qsparser-js",
   "version": "1.0.0",
   "description": "qsparser for js and ts",
   "types": "lib/index.d.ts",
