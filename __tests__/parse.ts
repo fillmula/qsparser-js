@@ -1,4 +1,5 @@
-import {parse} from "../src/index"
+import assert from 'assert'
+import { parse } from "../src"
 
 test("test_parse_decodes_int_into_string", () => {
     let qs = 'a=5'
