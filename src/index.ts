@@ -31,16 +31,15 @@ function genKey(items: string[]) {
 }
 
 export function parse(qs: string) {
-    let result = {}
+    const result = {}
     if (qs === '') {
         return result
     }
-    let tokens = qs.split('&')
-    for (let token in tokens) {
-        let [key, value] = token.split('=')
-        let items = key.replace(/\]$/, "").split(/\]?\[/)
+    qs.split('&').map((token) => {
+        const [key, value] = token.split('=')
+        const items = key.replace(/\]$/, "").split(/\]?\[/)
         assignToResult(result, items, value)
-    }
+    })
     return result
 }
 
@@ -58,7 +57,7 @@ function assignToResult(
         return
     }
     if (Array.isArray(result)) {
-        if (Number(items[0]) > result.length) {
+        if (Number(items[0]) >= result.length) {
             if ((items.length > 1) && (items[1] === '0')) {
                 result.push([])
             } else {
@@ -66,15 +65,17 @@ function assignToResult(
             }
         }
     } else {
-        if ((items.length > 1) && (items[1] === '0')) {
-            result[items[0]] = []
-        } else {
-            result[items[0]] = {}
+        if (!(items[0] in result)) {
+            if ((items.length > 1) && (items[1] === '0')) {
+                result[items[0]] = []
+            } else {
+                result[items[0]] = {}
+            }
         }
     }
     if (Array.isArray(result)) {
-        assignToResult(result[Number(items[0])], result.slice(1), value)
+        assignToResult(result[Number(items[0])], items.slice(1), value)
     } else {
-        assignToResult(result[items[0]], result.slice(1), value)
+        assignToResult(result[items[0]], items.slice(1), value)
     }
 }
