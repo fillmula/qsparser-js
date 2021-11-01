@@ -1,8 +1,9 @@
 export function stringify(obj: {[key: string]: any}): string {
-    return [].concat.apply(...Object.entries(obj).map(([key, value]) => {
+    return Object.entries(obj).map(([key, value]) => {
         return genTokens([key], value)
-    })).join('&')
+    }).flat(Number.MAX_SAFE_INTEGER).join('&')
 }
+
 
 function genTokens(items: string[], value: any): string[] {
     if (value === true) {
