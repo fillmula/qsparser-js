@@ -77,3 +77,10 @@ test("test stringify encodes nested items into a long string", () => {
     let result = stringify(original)
     assert.equal(result, expected)
 })
+
+test("test stringify encodes date into date string", () => {
+    assert.equal(
+        stringify({"a": new Date(Date.UTC(2020, 11, 24, 0, 0, 0, 0))}),
+        "a=2020-12-24T00%3A00%3A00.000Z"
+    )
+})

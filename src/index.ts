@@ -16,12 +16,14 @@ function genTokens(items: string[], value: any): string[] {
         return [].concat.apply((value).map((v, i) => {
             return genTokens([...items, String(i)], v)
         }))
+    } else if (value === undefined) {
+        return []
+    } else if (value instanceof Date) {
+        return [`${genKey(items)}=${encodeURIComponent(value.toISOString())}`]
     } else if (typeof value === 'object') {
         return [].concat.apply(Object.entries(value).map(([k, v]) => {
             return genTokens([...items, String(k)], v)
         }))
-    } else if (value === undefined) {
-        return []
     } else {
         return [`${genKey(items)}=${encodeURIComponent(String(value))}`]
     }
