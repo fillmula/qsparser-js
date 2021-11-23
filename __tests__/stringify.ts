@@ -78,6 +78,24 @@ test("test stringify encodes nested items into a long string", () => {
     assert.equal(result, expected)
 })
 
+test("test_stringify_encodes_none_into_null", () => {
+    assert.equal(stringify({"a":  null}), "a=null")
+})
+
+test("test_stringify_encodes_null_string_into_null_string", () => {
+    assert.equal(stringify({"a": "null"}), "a=%60null%60")
+    assert.equal(stringify({"a": "Null"}), "a=%60Null%60")
+    assert.equal(stringify({"a": "NULL"}), "a=%60NULL%60")
+})
+
+test("test_stringify_encodes_none_string_into_none_string", () => {
+    assert.equal(stringify({"a": "None"}), "a=%60None%60")
+})
+
+test("test_stringify_encodes_none_string_into_none_string", () => {
+    assert.equal(stringify({"a": "nil"}), "a=%60nil%60")
+})
+
 test("test stringify encodes date into date string", () => {
     assert.equal(
         stringify({"a": new Date(Date.UTC(2020, 11, 24, 0, 0, 0, 0))}),

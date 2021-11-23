@@ -4,6 +4,50 @@ export function stringify(obj: {[key: string]: any}): string {
     }).flat(Number.MAX_SAFE_INTEGER).join('&')
 }
 
+function escapeNull(qs: string){
+    switch(qs){
+        case 'null':
+            return '`null`'
+        case 'Null':
+            return '`Null`'
+        case 'NULL':
+            return '`NULL`'
+        case 'nil':
+            return '`nil`'
+        case 'None':
+            return '`None`'
+        default:
+            return qs
+    }
+}
+
+function unescapeNull(qs: String){
+    switch(qs){
+        case  '`null`':
+            return 'null'
+        case  '`Null`' :
+            return 'Null'
+        case  '`NULL`':
+            return 'NULL'
+        case  '`nil`':
+            return 'nil'
+        case   '`None`':
+            return 'None'
+        case  'null':
+            return null
+        case  'Null':
+            return null
+        case   'NULL':
+            return null
+        case  'nil':
+            return null
+        case   'None':
+            return null
+        default:
+            return qs
+    }
+
+}
 
 function genTokens(items: string[], value: any): string[] {
     if (value === true) {
@@ -24,6 +68,10 @@ function genTokens(items: string[], value: any): string[] {
         return [].concat.apply(Object.entries(value).map(([k, v]) => {
             return genTokens([...items, String(k)], v)
         }))
+    } else if  (typeof value === 'string'){
+        return [`${genKey(items)}=${encodeURIComponent(escapeNull(value))}`]
+    } else if (value === undefined) {
+        return []
     } else {
         return [`${genKey(items)}=${encodeURIComponent(String(value))}`]
     }
@@ -53,9 +101,9 @@ function assignToResult(
 ) {
     if (items.length === 1) {
         if (Array.isArray(result)) {
-            result.push(decodeURIComponent(value))
+            result.push(unescapeNull(decodeURIComponent(value)))
         } else {
-            result[items[0]] = decodeURIComponent(value)
+            result[items[0]] = unescapeNull(decodeURIComponent(value))
         }
         return
     }
