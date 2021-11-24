@@ -92,7 +92,7 @@ test("test_stringify_encodes_none_string_into_none_string", () => {
     assert.equal(stringify({"a": "None"}), "a=%60None%60")
 })
 
-test("test_stringify_encodes_none_string_into_none_string", () => {
+test("test_stringify_encodes_nil_string_into_nil_string", () => {
     assert.equal(stringify({"a": "nil"}), "a=%60nil%60")
 })
 
